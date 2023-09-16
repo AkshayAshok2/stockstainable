@@ -16,7 +16,5 @@ insert description here
 
 To update the environment:
 
-	```
 	conda activate sh23
 	conda env update -f environment.yml --prune
-	```
