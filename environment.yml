@@ -2,3 +2,5 @@ name: sh23
 dependencies:
   - python=3.11
   - jupyter
+  - pip:
+    - yfinance
