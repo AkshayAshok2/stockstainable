@@ -1,7 +1,4 @@
 name: sh23
-channels:
-  - defaults
 dependencies:
   - python=3.11
   - jupyter
-prefix: C:\Users\shay2\anaconda3\envs\sh23
