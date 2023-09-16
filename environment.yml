@@ -4,3 +4,4 @@ dependencies:
   - jupyter
   - pip:
     - yfinance
+    - matplotlib
