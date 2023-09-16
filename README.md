@@ -4,6 +4,8 @@ insert description here
 
 ## Setup
 
-```
-conda env create -f environment.yml
-```
+1. Create a Python virtual environment:
+
+	```
+	conda env create -f environment.yml
+	```
