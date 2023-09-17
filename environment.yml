@@ -6,6 +6,11 @@ dependencies:
   - pip:
     - yfinance
     - matplotlib
-    - yesg
     - flask
     - flask-cors
+    - python-dotenv
+    - pymongo
+    - gnews
+    - newspaper3k
+    - nltk
+    - Pillow
