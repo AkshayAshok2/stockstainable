@@ -4,7 +4,9 @@ insert description here
 
 ## Setup
 
-1. Clone the repository and create and activate the Python virtual environment:
+1. Install [Anaconda](https://www.anaconda.com/products/individual).
+
+2. Clone the repository and create and activate the Python virtual environment:
 
 	```
 	git clone https://github.com/AkshayAshok2/shellhacks-23
@@ -13,7 +15,7 @@ insert description here
 	conda activate sh23
 	```
 
-2. Download the sentiment analysis model:
+3. Download the sentiment analysis model:
 
 	```
 	python download.py
