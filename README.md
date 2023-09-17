@@ -21,6 +21,29 @@ A tool for analyzing the sustainability of S&P 500 companies.
 	python download.py
 	```
 
+4. Install the required packages:
+
+	```
+	cd client
+	npm install
+	```
+
+5. Start the backend server:
+
+	```
+	cd ../server
+	python server.py
+	```
+
+6. In another terminal, start the frontend server:
+
+	```
+	cd shellhacks-23/client
+	npm run dev
+	```
+
+Now the application can be used at `http://localhost:3000` in a Web browser.
+
 ## Maintenance
 
 To update the environment from `environment.yml`:
