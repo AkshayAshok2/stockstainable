@@ -46,12 +46,12 @@ def plot(sustainability, metric, value, maximum):
     ax.set_axis_off()
     fig.patch.set_alpha(0)
     fig.set_figheight(1)
-    ax.plot([0, maximum], [0, 0], "k")
-    ax.plot([0, maximum], [0, 0], "ko")
+    ax.plot([0, maximum], [0, 0], "w")
+    ax.plot([0, maximum], [0, 0], "wo")
     summary = sustainability[f"peer{metric}Performance"]
-    ax.plot([summary["min"], summary["max"]], [0, 0], "co")
-    ax.plot([summary["avg"]], [0], "yo")
-    ax.plot([value], [0], "ro")
+    ax.plot([summary["min"], summary["max"]], [0, 0], marker="o", color="lime", linestyle="")
+    ax.plot([summary["avg"]], [0], marker="o", color="yellow", linestyle="")
+    ax.plot([value], [0], marker="o", color="red", linestyle="")
     buf = BytesIO()
     fig.savefig(buf, format="png")
     image = f"data:image/png;base64,{base64.b64encode(buf.getbuffer()).decode('ascii')}"
