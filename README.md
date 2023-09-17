@@ -9,8 +9,8 @@ A tool for analyzing the sustainability of S&P 500 companies.
 2. Clone the repository and create and activate the Python virtual environment:
 
 	```
-	git clone https://github.com/AkshayAshok2/shellhacks-23
-	cd shellhacks-23
+	git clone https://github.com/AkshayAshok2/stockstainable
+	cd stockstainable
 	conda env create -f environment.yml
 	conda activate sh23
 	```
@@ -38,7 +38,7 @@ A tool for analyzing the sustainability of S&P 500 companies.
 6. In another terminal, start the frontend server:
 
 	```
-	cd shellhacks-23/client
+	cd stockstainable/client
 	npm run dev
 	```
 
