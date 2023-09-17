@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+</head>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Inter, sans-serif;
+    background-color: #0c1a69; /* Dark blue background */
+    color: #FFF; /* White text */
+}
+
+.back-to-home-button {
+    display: block; /* Use block-level display to center horizontally */
+    margin: 0 auto; /* Center horizontally using margin */
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue color for the button */
+    color: #FFF; /* White text color */
+    text-decoration: none; /* Remove underlines */
+    border: none; /* Remove borders */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth background color transition on hover */
+    text-align: center; /* Center-align the button text */
+}
+
+/* Style the button on hover */
+.back-to-home-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+a:hover {
+    text-decoration: underline; /* Add underline on hover (optional) */
+}
+
+.outlined-title-text {
+    font-size: 26px;
+    font-weight: bold;
+    border-bottom: 5px;
+    text-shadow: 
+        -1px -1px 0 #000,  /* Top-left shadow */
+         1px -1px 0 #000,  /* Top-right shadow */
+        -1px  1px 0 #000,  /* Bottom-left shadow */
+         1px  1px 0 #000;  /* Bottom-right shadow */
+    margin-bottom: 50px; /* Add margin to create space between title and outlined text */
+    text-align: center; /* Center-align the title */
+}
+
+.outlined-text {
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 
+        -1px -1px 0 #000,  /* Top-left shadow */
+         1px -1px 0 #000,  /* Top-right shadow */
+        -1px  1px 0 #000,  /* Bottom-left shadow */
+         1px  1px 0 #000;  /* Bottom-right shadow */
+    margin-bottom: 30px;
+    text-align: center; /* Center-align the text */
+}
+
+/* Styling for the "Back to Home" link */
+.back-to-home {
+    color: #000; /* Black text color */
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow:
+        -0.5px -0.75px 0 #FFF,  /* Top-left white shadow */
+        0.5px -0.5px 0 #FFF,  /* Top-right white shadow */
+        -0.5px 0.5px 0 #FFF,  /* Bottom-left white shadow */
+        0.5px 0.5px 0 #FFF;  /* Bottom-right white shadow */
+}
+</style>
+
+<body>
+    <h1 class="outlined-title-text">Results</h1>
+    <p class="outlined-text">{{ stock_info }}</p>
+    <p class="outlined-text">____________________________________________________________________________________________________________________________________________________________________________________________________________</p>
+    <p class="outlined-text"></p>
+    <h1 class="outlined-title-text">General Information:</h1>
+    <p class="outlined-text">{{ stock_summary }}</p>
+    <a href="/" class="back-to-home-button">Back to Home</a>
+</body>
+</html>

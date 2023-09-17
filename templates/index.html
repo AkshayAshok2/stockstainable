@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Symbol Lookup</title>
+    <style>
+        /* Add CSS styles to position the "About" button in the top right corner */
+        .nav-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add a navigation button to the About page in the top right corner -->
+    <a href="/about" class="nav-link">About</a>
+    
+    <h1>Stock Symbol Lookup</h1>
+    <form method="POST" action="/lookup">
+        <label for="symbol">Enter Stock Symbol (S&P500):</label>
+        <input type="text" id="symbol" name="symbol" required>
+        <button type="submit">Lookup</button>
+    </form>
+</body>
+</html>
