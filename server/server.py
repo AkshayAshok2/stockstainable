@@ -32,18 +32,7 @@ def search():
     search = request.args.get('q')
     # Pass the ProgressBar instance and capitalized stock symbol to the get_data function,
     # which will return a dictionary of relevant data
-    data = get_data(bar, search)
-    df = {}
-
-    for k, v in data.items():
-        if not k.endswith("_plot"):
-            df[k] = v
-
-    # if data["has_esg"]: # this flags whether we have ESG data for a stock or not
-    #     for metric in ("esg", "environment", "social", "governance", "controversy"):
-    #         data[f"{metric}_plot"].show()
-
-    return df
+    return get_data(bar, search)
 
 
 if __name__ == '__main__':

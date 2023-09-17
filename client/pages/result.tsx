@@ -217,10 +217,42 @@ const Result: React.FC = () => {
                     </div>
 
                     {/* Right Column content */}
-                    <div className="md:w-1/2 flex flex-col items-center">
-                        {/* Right column content */}
-                        
-                            
+                    <div className="md:w-1/2 flex flex-col justify-left items-left text-white font-bold">
+                    {/* Right column content */}
+                    {apiData.has_esg ? (
+                        <div className="flex flex-wrap">
+                            <div className="flex items-center mb-4 mr-4 max-h-12 max-w-md">
+                                <img src={apiData.esg_plot} alt="ESG Plot" />
+                                <span className="mr-2">ESG</span>  
+                            </div>
+
+                            <div className="flex items-center mb-4 mr-4 max-h-12 max-w-md">
+                                <img src={apiData.environment_plot} alt="Env Plot" />
+                                <span className="mr-2">Environment</span>  
+                            </div>
+
+                            <div className="flex items-center mb-4 mr-4 max-h-12 max-w-md">
+                                <img src={apiData.social_plot} alt="Social Plot" />
+                                <span className="mr-2">Societal</span>   
+                            </div>
+
+                            <div className="flex items-center mb-4 mr-4 max-h-12 max-w-md">
+                                <img src={apiData.governance_plot} alt="Gov Plot" />
+                                <span className="mr-2">Governance</span>
+                            </div>
+
+                            <div className="flex items-center mb-4 max-h-12 max-w-md">
+                                <img src={apiData.controversy_plot} alt="Controversy" />
+                                <span className="mr-2">Controversy</span>
+                            </div>
+                            <br/>
+                            <div className="flex items-center mb-4 max-h-12 max-w-md">
+                                <span>Legend</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <div>No ESG data or plots available :)</div>
+                    )}
                     </div>
                 </div>
             </>
