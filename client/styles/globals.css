@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-gradient-navy {
+  background: linear-gradient(150deg, #0b0b91, #000022);
+  /* Adjust the gradient angle and colors to your preference */
+}
+
+.animate-title {
+  transition: color 0.3s ease; /* Add a smooth color transition effect */
+  color: #ff4500; /* Set the color to your desired animation color */
+}

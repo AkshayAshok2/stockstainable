@@ -7,3 +7,5 @@ dependencies:
     - yfinance
     - matplotlib
     - yesg
+    - flask
+    - flask-cors
