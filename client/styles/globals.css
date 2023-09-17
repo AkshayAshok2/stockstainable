@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .bg-gradient-navy {
-  background: linear-gradient(135deg, #000080, #000033);
+  background: linear-gradient(150deg, #0b0b91, #000022);
   /* Adjust the gradient angle and colors to your preference */
 }
 
