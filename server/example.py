@@ -1,22 +1,13 @@
-# Import the ProgressBar class and get_data function from the data module
 from data import ProgressBar, get_data
+from flask import Flask
 
-# Define a function that updates the real progress bar display
+app = Flask(__name__)
+
 def update_display(percentage):
-    print(f"{percentage}%") # the console is our progress bar for now
+    print(f"{percentage}%")
 
-if __name__ == "__main__": # <-- ignore this for now
-    bar = ProgressBar(update_display) # initialize a ProgressBar instance with the display function
-
+@app.route("/")
+def example():
+    bar = ProgressBar(update_display)
     while (symbol := input("Enter a stock symbol: ")) != "":
-        # Pass the ProgressBar instance and capitalized stock symbol to the get_data function,
-        # which will return a dictionary of relevant data
-        data = get_data(bar, symbol)
-
-        for k, v in data.items():
-            if not k.endswith("_plot"):
-                print(f"{k}: {v}")
-
-        if data["has_esg"]: # this flags whether we have ESG data for a stock or not
-            for metric in ("esg", "environment", "social", "governance", "controversy"):
-                data[f"{metric}_plot"].show()
+        return get_data(bar, symbol)

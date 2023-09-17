@@ -1,10 +1,11 @@
+import base64
 import threading
 from multiprocessing import Process, Queue
 from multiprocessing.managers import SharedMemoryManager
 from concurrent.futures import ThreadPoolExecutor
-import matplotlib.pyplot as plt
-from PIL import Image
+from matplotlib.figure import Figure
 from company import SandPCompany, sentiment
+from io import BytesIO
 
 BAD_THINGS = ["animalTesting", "controversialWeapons", "smallArms", "furLeather", "gmo",
         "pesticides", "palmOil", "coal", "militaryContract"]
@@ -40,19 +41,20 @@ def compute_mean_resp(q, comp, shared):
     q.put(comp)
 
 def plot(sustainability, metric, value, maximum):
-    fig = plt.figure()
-    plt.axis("off")
+    fig = Figure()
+    ax = fig.subplots()
+    ax.set_axis_off()
     fig.patch.set_alpha(0)
     fig.set_figheight(1)
-    plt.plot([0, maximum], [0, 0], "k")
-    plt.plot([0, maximum], [0, 0], "ko")
+    ax.plot([0, maximum], [0, 0], "k")
+    ax.plot([0, maximum], [0, 0], "ko")
     summary = sustainability[f"peer{metric}Performance"]
-    plt.plot([summary["min"], summary["max"]], [0, 0], "co")
-    plt.plot([summary["avg"]], [0], "yo")
-    plt.plot([value], [0], "ro")
-    canvas = fig.canvas
-    canvas.draw()
-    image = Image.frombuffer("RGBA", canvas.get_width_height(), canvas.renderer.buffer_rgba())
+    ax.plot([summary["min"], summary["max"]], [0, 0], "co")
+    ax.plot([summary["avg"]], [0], "yo")
+    ax.plot([value], [0], "ro")
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    image = base64.b64encode(buf.getbuffer()).decode("ascii")
     return image, {"min": 0, "peer_min": summary["min"], "peer_avg": summary["avg"],
             "peer_max": summary["max"], "max": maximum, "value": value}
 
