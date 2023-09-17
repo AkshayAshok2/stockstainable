@@ -52,7 +52,9 @@ def plot(sustainability, metric, value, maximum):
     plt.plot([value], [0], "ro")
     canvas = fig.canvas
     canvas.draw()
-    return Image.frombuffer("RGBA", canvas.get_width_height(), canvas.renderer.buffer_rgba())
+    image = Image.frombuffer("RGBA", canvas.get_width_height(), canvas.renderer.buffer_rgba())
+    return image, {"min": 0, "peer_min": summary["min"], "peer_avg": summary["avg"],
+            "peer_max": summary["max"], "max": maximum, "value": value}
 
 def progress(progress_bar, smem):
     headlines = set()
@@ -91,14 +93,14 @@ def get_data(progress_bar, symbol):
     raw_score = (result["sentiment"] + result["esg_percentile"] / 100 + result["badness"]) * 5
     result["score"] = max(round(raw_score), 0)
     result["esg"] = sus["totalEsg"]["raw"]
-    result["esg_plot"] = plot(sus, "EsgScore", sus["totalEsg"]["raw"], 70)
+    result["esg_plot"], result["esg_plot_points"] = plot(sus, "EsgScore", sus["totalEsg"]["raw"], 70)
     for factor in ("Environment", "Social", "Governance"):
         lower = factor.lower()
         score = sus[f"{lower}Score"]["raw"]
         result[lower] = score
-        result[f"{lower}_plot"] = plot(sus, factor, score, 35)
+        result[f"{lower}_plot"], result[f"{lower}_plot_points"] = plot(sus, factor, score, 35)
     result["controversy"] = sus["highestControversy"]
-    result["controversy_plot"] = plot(sus, "HighestControversy", sus["highestControversy"], 5)
+    result["controversy_plot"], result["controversy_plot_points"] = plot(sus, "HighestControversy", sus["highestControversy"], 5)
     result["controversies"] = sus["relatedControversy"]
     result["category"] = sus["peerGroup"]
     result["category_size"] = sus["peerCount"]
