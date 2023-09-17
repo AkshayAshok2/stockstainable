@@ -1,21 +1,23 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yfinance as yf
+import pandas as pd
+from data import ProgressBar, get_data
 
 # App instance
 app = Flask(__name__)
 CORS(app)
 
-sp500_symbols = []
+sp500_symbols = pd.read_csv('sandp.csv', index_col=0)
 
-with open("sandp.txt") as f:
-        sp500_symbols = f.read().split("\n")
-
+def update_display(percentage):
+    print(f"{percentage}%") # the console is our progress bar for now
 
 @app.route('/api/check', methods=['GET'])
 def check_stock():
     search = request.args.get('q').strip().upper()
-    if search in sp500_symbols:
+    if search in sp500_symbols.index:
+        # More information pulled from yfinance as preferred
         response = True
         tkr = yf.Ticker(search)
         name = tkr.info['longName']
@@ -26,7 +28,22 @@ def check_stock():
 
 @app.route('/api/search', methods=['GET', 'POST'])
 def search():
-    searchTerm = request
+    bar = ProgressBar(update_display) # initialize a ProgressBar instance with the display function
+    search = request.args.get('q')
+    # Pass the ProgressBar instance and capitalized stock symbol to the get_data function,
+    # which will return a dictionary of relevant data
+    data = get_data(bar, search)
+    df = {}
+
+    for k, v in data.items():
+        if not k.endswith("_plot"):
+            df[k] = v
+
+    # if data["has_esg"]: # this flags whether we have ESG data for a stock or not
+    #     for metric in ("esg", "environment", "social", "governance", "controversy"):
+    #         data[f"{metric}_plot"].show()
+
+    return df
 
 
 if __name__ == '__main__':

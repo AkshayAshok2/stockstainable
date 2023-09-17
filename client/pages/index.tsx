@@ -1,5 +1,6 @@
 import React, { useEffect, useState, FormEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Loader from 'react-loader-spinner';
 
 const Home: React.FC = () => {
   const [search, setSearch] = useState('');
