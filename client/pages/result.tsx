@@ -197,21 +197,14 @@ const Result: React.FC = () => {
                         {selectedTab === 'Sentiment' && (
                             <div className="text-white mb-4">
                                 <b>Public Opinion Sentiment Score:</b> {apiData.sentiment.toFixed(2)} / 1.00<br/>
-                                <b>Recent Sustainability Headlines:</b><br/>{apiData.sentimental_headlines}<br/>
+                                <b>Recent Sustainability Headlines:</b><br/>{apiData.sentimental_headlines.join(', ')}<br/>
                             </div>
                         )}
                         {selectedTab === 'Problems' && (
                             <div className="text-white mb-4">
-                                <b>Controversies:</b> {apiData.controversies}<br/>
+                                <b>Controversies:</b> {apiData.controversies.join(', ')}<br/>
                                 <b>Controversy Score:</b> {apiData.controversy.toFixed(2)} / 5.00<br/>
-                                <b>Potentially Unsustainable Practices:</b> {apiData.bad_things}<br/>
-                            </div>
-                        )}
-                        {selectedTab === 'Financial' && (
-            
-                            <div className="text-white mb-4">
-                            {/* Display Financial content */}
-                            Financial Data Here
+                                <b>Potentially Unsustainable Practices:</b> {apiData.bad_things.join(', ')}<br/>
                             </div>
                         )}
                     </div>
@@ -221,6 +214,13 @@ const Result: React.FC = () => {
                     {/* Right column content */}
                     {apiData.has_esg ? (
                         <div className="flex flex-wrap">
+                            <div className="flex mb-4 mr-4 max-h-12 max-w-md">
+                                <b>Legend:</b>
+                                &nbsp;
+                                <span className="text-red-500">This Company</span>&nbsp;
+                                <span className="text-yellow-500">Industry Mean</span>&nbsp;
+                                <span className="text-green-500">Industry Min/Max</span>
+                            </div>
                             <div className="flex items-center mb-4 mr-4 max-h-12 max-w-md">
                                 <img src={apiData.esg_plot} alt="ESG Plot" />
                                 <span className="mr-2">ESG</span>  
@@ -244,10 +244,6 @@ const Result: React.FC = () => {
                             <div className="flex items-center mb-4 max-h-12 max-w-md">
                                 <img src={apiData.controversy_plot} alt="Controversy" />
                                 <span className="mr-2">Controversy</span>
-                            </div>
-                            <br/>
-                            <div className="flex items-center mb-4 max-h-12 max-w-md">
-                                <span>Legend</span>
                             </div>
                         </div>
                     ) : (

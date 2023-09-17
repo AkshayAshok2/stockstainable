@@ -11,8 +11,8 @@ BAD_THINGS = {"animalTesting": "Animal Testing", "controversialWeapons": "Contro
         "smallArms": "Small Arms and Light Weapons", "furLeather": "Fur/Leather", "gmo": "GMOs",
         "pesticides": "Pesticides", "palmOil": "Palm Oil", "coal": "Coal",
         "militaryContract": "Military Contracting"}
-PERF_MAP = {"LEAD_PERF": "extremely high", "OUT_PERF": "high", "AVG_PERF": "medium",
-        "UNDER_PERF": "low", "LAG_PERF": "negligible"}
+PERF_MAP = {"LEAD_PERF": "Extremely High", "OUT_PERF": "High", "AVG_PERF": "Medium",
+        "UNDER_PERF": "Low", "LAG_PERF": "Negligible"}
 
 # TODO: figure out how to do multiprocessing properly!
 
