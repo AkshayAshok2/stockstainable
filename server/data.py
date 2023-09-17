@@ -54,7 +54,7 @@ def plot(sustainability, metric, value, maximum):
     ax.plot([value], [0], "ro")
     buf = BytesIO()
     fig.savefig(buf, format="png")
-    image = base64.b64encode(buf.getbuffer()).decode("ascii")
+    image = f"data:image/png;base64,{base64.b64encode(buf.getbuffer()).decode('ascii')}"
     return image, {"min": 0, "peer_min": summary["min"], "peer_avg": summary["avg"],
             "peer_max": summary["max"], "max": maximum, "value": value}
 
