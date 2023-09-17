@@ -7,8 +7,10 @@ from matplotlib.figure import Figure
 from company import SandPCompany, sentiment
 from io import BytesIO
 
-BAD_THINGS = ["animalTesting", "controversialWeapons", "smallArms", "furLeather", "gmo",
-        "pesticides", "palmOil", "coal", "militaryContract"]
+BAD_THINGS = {"animalTesting": "Animal Testing", "controversialWeapons": "Controversial Weapons",
+        "smallArms": "Small Arms and Light Weapons", "furLeather": "Fur/Leather", "gmo": "GMOs",
+        "pesticides": "Pesticides", "palmOil": "Palm Oil", "coal": "Coal",
+        "militaryContract": "Military Contracting"}
 PERF_MAP = {"LEAD_PERF": "extremely high", "OUT_PERF": "high", "AVG_PERF": "medium",
         "UNDER_PERF": "low", "LAG_PERF": "negligible"}
 
@@ -90,7 +92,7 @@ def get_data(progress_bar, symbol):
         result["score"] = round(result["sentiment"] * 10)
         return result
     result["esg_percentile"] = sus["percentile"]["raw"]
-    result["bad_things"] = [thing for thing in BAD_THINGS if sus[thing]]
+    result["bad_things"] = [display for thing, display in BAD_THINGS.items() if sus[thing]]
     result["badness"] = -len(result["bad_things"]) / len(BAD_THINGS)
     raw_score = (result["sentiment"] + result["esg_percentile"] / 100 + result["badness"]) * 5
     result["score"] = max(round(raw_score), 0)
