@@ -1,6 +1,6 @@
 # StockStainable
 
-insert description here
+A tool for analyzing the sustainability of S&P 500 companies
 
 ## Setup
 
