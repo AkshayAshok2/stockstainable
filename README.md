@@ -13,9 +13,14 @@ insert description here
 	conda activate sh23
 	```
 
+2. Download the sentiment analysis model:
+
+	```
+	python download.py
+	```
+
 ## Maintenance
 
 To update the environment from `environment.yml`:
 
-	conda activate sh23
 	conda env update -f environment.yml --prune

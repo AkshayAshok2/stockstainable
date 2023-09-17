@@ -1,0 +1,106 @@
+import threading
+from multiprocessing import Process, Queue
+from multiprocessing.managers import SharedMemoryManager
+from concurrent.futures import ThreadPoolExecutor
+import matplotlib.pyplot as plt
+from PIL import Image
+from company import SandPCompany, sentiment
+
+BAD_THINGS = ["animalTesting", "controversialWeapons", "smallArms", "furLeather", "gmo",
+        "pesticides", "palmOil", "coal", "militaryContract"]
+PERF_MAP = {"LEAD_PERF": "extremely high", "OUT_PERF": "high", "AVG_PERF": "medium",
+        "UNDER_PERF": "low", "LAG_PERF": "negligible"}
+
+# TODO: figure out how to do multiprocessing properly!
+
+class ProgressBar:
+    def __init__(self, function):
+        self.function = function
+    def set_total(self, total):
+        self.progress = 0
+        self.total = total
+        self.update_display()
+    def increment(self):
+        self.progress += 1
+        self.update_display()
+    def update_display(self):
+        self.function((self.progress / self.total) * 100)
+
+def compute_mean_resp(q, comp, shared):
+    with ThreadPoolExecutor() as executor:
+        results = executor.map(lambda index: sentiment(shared, comp.news, comp.resp, index), range(comp.n_resps))
+    shared.buf[0] = 255
+    filtered = [polarity for polarity in results if polarity[0] is not None]
+    distances = [abs(polarity[0] - 0.5) for polarity in filtered]
+    max_distance = max(distances)
+    contributors = [filtered[i] for i, d in enumerate(distances) if d == max_distance]
+    max_polarities, titles = zip(*contributors)
+    comp.mean_resp = sum(max_polarities) / len(max_polarities)
+    comp.titles = titles
+    q.put(comp)
+
+def plot(sustainability, metric, value, maximum):
+    fig = plt.figure()
+    plt.axis("off")
+    fig.patch.set_alpha(0)
+    fig.set_figheight(1)
+    plt.plot([0, maximum], [0, 0], "k")
+    plt.plot([0, maximum], [0, 0], "ko")
+    summary = sustainability[f"peer{metric}Performance"]
+    plt.plot([summary["min"], summary["max"]], [0, 0], "co")
+    plt.plot([summary["avg"]], [0], "yo")
+    plt.plot([value], [0], "ro")
+    canvas = fig.canvas
+    canvas.draw()
+    return Image.frombuffer("RGBA", canvas.get_width_height(), canvas.renderer.buffer_rgba())
+
+def progress(progress_bar, smem):
+    headlines = set()
+    while True:
+        buf = smem.buf[0]
+        if buf == 255:
+            break
+        if buf not in headlines:
+            headlines.add(buf)
+            progress_bar.increment()
+        
+def get_data(progress_bar, symbol):
+    result = {}
+    company = SandPCompany(symbol)
+    progress_bar.set_total(company.n_resps)
+    with SharedMemoryManager() as smm:
+        smem = smm.SharedMemory(1)
+        q = Queue()
+        proc = Process(target=compute_mean_resp, args=(q, company, smem))
+        proc.start()
+        thread = threading.Thread(target=progress, args=(progress_bar, smem))
+        thread.daemon = True
+        thread.start()
+        proc.join()
+    company = q.get()
+    sus = company.sustainability_data
+    result["has_esg"] = sus != {}
+    result["sentimental_headlines"] = company.titles
+    result["sentiment"] = company.mean_resp
+    if not result["has_esg"]:
+        result["score"] = round(result["sentiment"] * 10)
+        return result
+    result["esg_percentile"] = sus["percentile"]["raw"]
+    result["bad_things"] = [thing for thing in BAD_THINGS if sus[thing]]
+    result["badness"] = -len(result["bad_things"]) / len(BAD_THINGS)
+    raw_score = (result["sentiment"] + result["esg_percentile"] / 100 + result["badness"]) * 5
+    result["score"] = max(round(raw_score), 0)
+    result["esg"] = sus["totalEsg"]["raw"]
+    result["esg_plot"] = plot(sus, "EsgScore", sus["totalEsg"]["raw"], 70)
+    for factor in ("Environment", "Social", "Governance"):
+        lower = factor.lower()
+        score = sus[f"{lower}Score"]["raw"]
+        result[lower] = score
+        result[f"{lower}_plot"] = plot(sus, factor, score, 35)
+    result["controversy"] = sus["highestControversy"]
+    result["controversy_plot"] = plot(sus, "HighestControversy", sus["highestControversy"], 5)
+    result["controversies"] = sus["relatedControversy"]
+    result["category"] = sus["peerGroup"]
+    result["category_size"] = sus["peerCount"]
+    result["performance"] = PERF_MAP[sus["esgPerformance"]]
+    return result
